@@ -1,426 +1,495 @@
-import React, { useState } from 'react';
-import { 
-  Target, 
-  MessageCircle, 
-  CheckCircle, 
-  Star, 
-  Award,
-  ChevronDown,
-  ChevronUp,
-  Clock,
-  ArrowRight,
-  User,
-  Zap,
-  Coffee,
-  XCircle,
-  Sparkles,
-  Heart,
-  Crown
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Susan外贸1v1私教 | 精准陪跑</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 React 和 ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- 引入 Babel 用于解析 JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- 自定义配置 Tailwind 字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <div id="root"></div>
 
-const App = () => {
-  const [openModule, setOpenModule] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+    <script type="text/babel">
+        const { useState, useEffect } = React;
 
-  const toggleModule = (index) => {
-    setOpenModule(openModule === index ? null : index);
-  };
-
-  const handleConsult = () => {
-    setShowModal(true);
-  };
-
-  const coachingTopics = [
-    {
-      title: "第一阶段：现有业务诊断与精准定位",
-      desc: "不讲虚的理论。直接拆解你手头的产品和市场，告诉你路该往哪走。",
-      points: [
-        "你当前选品与定价策略的深度诊断（为什么在这个市场卖不动？）",
-        "竞争对手分析：带你逆向拆解Top同行的打法",
-        "客户画像重构：帮你理清到底谁才是你的高利润买家",
-        "避坑指南：指出你目前业务流程中正在漏财的漏洞"
-      ]
-    },
-    {
-      title: "第二阶段：主动开发技能手把手实操",
-      desc: "拒绝海量数据轰炸。带你用最笨但最有效的方法，哪怕只找10个客户，也要谈成1个。",
-      points: [
-        "Google精准搜索实战：看着我的屏幕，教你搜出CEO私人邮箱",
-        "领英LinkedIn人设打造：手把手帮你改Profile，让客户主动通过你",
-        "社媒私信话术打磨：针对你的产品，定制一套不被拉黑的开场白",
-        "精准获客思维纠正：为什么你发的开发信总是石沉大海？"
-      ]
-    },
-    {
-      title: "第三阶段：谈判与转化（针对性复盘）",
-      desc: "不给通用模板。针对你具体的客户回复，我一句一句教你怎么回。",
-      points: [
-        "实时邮件复盘：把你卡住的邮件发给我，我告诉你下一封怎么写",
-        "价格博弈指导：客户嫌贵时，教你如何不降价也能通过价值锚定赢回来",
-        "逼单节奏把控：分析客户心理，教你识别何时该“晾”，何时该“逼”",
-        "差异化跟进：除了问“订单怎么样了”，你还能聊什么？"
-      ]
-    },
-    {
-      title: "第四阶段：独立站与私域布局建议",
-      desc: "不教你做复杂的SEO技术。只教你如何搭建一个能信任、能转化的私域门面。",
-      points: [
-        "Landing Page 转化率诊断：你的网站为什么留不住人？",
-        "内容营销思路：教你写出谷歌收录且客户爱看的专业文章",
-        "WhatsApp私域运营：如何把一次性询盘变成朋友圈的长期老铁",
-        "个人IP建议：在外贸圈如何建立自己的专业影响力"
-      ]
-    },
-    {
-      title: "第五阶段：效率工具与AI辅助",
-      desc: "带你配置属于你的“外贸核武器”，把重复劳动交给AI。",
-      points: [
-        "ChatGPT 调教实战：帮你写出有你个人风格（不像机器人）的邮件",
-        "自动化工作流搭建：教你如何管理客户，不再遗漏任何一个商机",
-        "高效工具推荐：Susan自用的“小而美”工具箱分享"
-      ]
-    }
-  ];
-
-  return (
-    <div className="font-sans text-slate-800 bg-slate-50 min-h-screen pb-20 overflow-x-hidden selection:bg-pink-200 selection:text-pink-900">
-      
-      {/* 全局动态背景装饰 */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 -left-24 w-72 h-72 bg-blue-200/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-pink-200/40 rounded-full blur-3xl"></div>
-      </div>
-
-      {/* 顶部导航 - 磨砂玻璃效果 */}
-      <nav className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/70 backdrop-blur-md border-b border-white/50 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold text-xl font-serif shadow-lg shadow-indigo-200">S</div>
-              <span className="font-bold text-xl text-slate-800 tracking-wide flex items-center gap-1">
-                Susan外贸私教 <Sparkles className="w-4 h-4 text-pink-400" />
-              </span>
-            </div>
-            <button 
-              onClick={handleConsult}
-              className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-pink-200 hover:shadow-pink-300 hover:-translate-y-0.5"
+        // --- 图标组件 (替换 Lucide-React 以适应单文件 HTML) ---
+        const Icon = ({ path, className, size = 24, fill = "none" }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width={size} 
+                height={size} 
+                viewBox="0 0 24 24" 
+                fill={fill} 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
             >
-              预约咨询
-            </button>
-          </div>
-        </div>
-      </nav>
+                {path}
+            </svg>
+        );
 
-      {/* Hero Section - 软萌科技风 */}
-      <div className="relative pt-32 pb-20 z-10">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            
-            <div className="md:w-3/5 space-y-8">
-              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur border border-white px-4 py-1.5 rounded-full text-sm font-bold text-violet-600 shadow-sm">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
-                </span>
-                目前仅剩 2 个私教名额
+        const icons = {
+            Target: (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>} />,
+            MessageCircle: (props) => <Icon {...props} path={<><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></>} />,
+            CheckCircle: (props) => <Icon {...props} path={<><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></>} />,
+            Star: (props) => <Icon {...props} path={<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>} />,
+            Award: (props) => <Icon {...props} path={<><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></>} />,
+            ChevronDown: (props) => <Icon {...props} path={<polyline points="6 9 12 15 18 9"/>} />,
+            ChevronUp: (props) => <Icon {...props} path={<polyline points="18 15 12 9 6 15"/>} />,
+            Clock: (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>} />,
+            ArrowRight: (props) => <Icon {...props} path={<><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>} />,
+            User: (props) => <Icon {...props} path={<><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>} />,
+            Zap: (props) => <Icon {...props} path={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>} />,
+            Coffee: (props) => <Icon {...props} path={<><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></>} />,
+            XCircle: (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></>} />,
+            Sparkles: (props) => <Icon {...props} path={<><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M5 9v-4"/></>} />,
+            Heart: (props) => <Icon {...props} path={<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>} />,
+            Crown: (props) => <Icon {...props} path={<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>} />
+        };
+
+        const App = () => {
+          const [openModule, setOpenModule] = useState(null);
+          const [showModal, setShowModal] = useState(false);
+
+          const toggleModule = (index) => {
+            setOpenModule(openModule === index ? null : index);
+          };
+
+          const handleConsult = () => {
+            setShowModal(true);
+          };
+
+          const coachingTopics = [
+            {
+              title: "第一阶段：现有业务诊断与精准定位",
+              desc: "不讲虚的理论。直接拆解你手头的产品和市场，告诉你路该往哪走。",
+              points: [
+                "你当前选品与定价策略的深度诊断（为什么在这个市场卖不动？）",
+                "竞争对手分析：带你逆向拆解Top同行的打法",
+                "客户画像重构：帮你理清到底谁才是你的高利润买家",
+                "避坑指南：指出你目前业务流程中正在漏财的漏洞"
+              ]
+            },
+            {
+              title: "第二阶段：主动开发技能手把手实操",
+              desc: "拒绝海量数据轰炸。带你用最笨但最有效的方法，哪怕只找10个客户，也要谈成1个。",
+              points: [
+                "Google精准搜索实战：看着我的屏幕，教你搜出CEO私人邮箱",
+                "领英LinkedIn人设打造：手把手帮你改Profile，让客户主动通过你",
+                "社媒私信话术打磨：针对你的产品，定制一套不被拉黑的开场白",
+                "精准获客思维纠正：为什么你发的开发信总是石沉大海？"
+              ]
+            },
+            {
+              title: "第三阶段：谈判与转化（针对性复盘）",
+              desc: "不给通用模板。针对你具体的客户回复，我一句一句教你怎么回。",
+              points: [
+                "实时邮件复盘：把你卡住的邮件发给我，我告诉你下一封怎么写",
+                "价格博弈指导：客户嫌贵时，教你如何不降价也能通过价值锚定赢回来",
+                "逼单节奏把控：分析客户心理，教你识别何时该“晾”，何时该“逼”",
+                "差异化跟进：除了问“订单怎么样了”，你还能聊什么？"
+              ]
+            },
+            {
+              title: "第四阶段：独立站与私域布局建议",
+              desc: "不教你做复杂的SEO技术。只教你如何搭建一个能信任、能转化的私域门面。",
+              points: [
+                "Landing Page 转化率诊断：你的网站为什么留不住人？",
+                "内容营销思路：教你写出谷歌收录且客户爱看的专业文章",
+                "WhatsApp私域运营：如何把一次性询盘变成朋友圈的长期老铁",
+                "个人IP建议：在外贸圈如何建立自己的专业影响力"
+              ]
+            },
+            {
+              title: "第五阶段：效率工具与AI辅助",
+              desc: "带你配置属于你的“外贸核武器”，把重复劳动交给AI。",
+              points: [
+                "ChatGPT 调教实战：帮你写出有你个人风格（不像机器人）的邮件",
+                "自动化工作流搭建：教你如何管理客户，不再遗漏任何一个商机",
+                "高效工具推荐：Susan自用的“小而美”工具箱分享"
+              ]
+            }
+          ];
+
+          return (
+            <div className="font-sans text-slate-800 bg-slate-50 min-h-screen pb-20 overflow-x-hidden selection:bg-pink-200 selection:text-pink-900">
+              
+              {/* 全局动态背景装饰 */}
+              <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+                <div className="absolute -top-24 -right-24 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute top-1/2 -left-24 w-72 h-72 bg-blue-200/40 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 right-0 w-80 h-80 bg-pink-200/40 rounded-full blur-3xl"></div>
               </div>
-              
-              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight">
-                不做流水线式培训<br/>
-                只做 <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">Susan 1v1</span>
-                <br/><span className="text-3xl md:text-5xl text-slate-700">精准陪跑</span>
-              </h1>
-              
-              <p className="text-lg text-slate-600 leading-relaxed max-w-xl font-medium">
-                不需要你看几百个小时的录播课，也不给你扔一堆无效的海关数据。
-                <br/><br/>
-                <strong className="text-indigo-600">我叫Susan。</strong> 我用最直接的方式，在线手把手带你解决具体的业务难题。从选品定位到谈判成交，更精准，更高效。
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <button onClick={handleConsult} className="group relative bg-slate-900 text-white text-lg font-bold py-4 px-10 rounded-2xl shadow-xl shadow-slate-200 overflow-hidden transition-all hover:scale-105 hover:shadow-2xl">
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-violet-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center justify-center gap-2">
-                    <MessageCircle className="w-5 h-5" />
-                    和Susan聊聊
+
+              {/* 顶部导航 - 磨砂玻璃效果 */}
+              <nav className="fixed w-full top-0 z-50 transition-all duration-300 bg-white/70 backdrop-blur-md border-b border-white/50 shadow-sm">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="flex justify-between items-center h-20">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-gradient-to-r from-violet-600 to-indigo-600 text-white w-10 h-10 flex items-center justify-center rounded-xl font-bold text-xl font-serif shadow-lg shadow-indigo-200">S</div>
+                      <span className="font-bold text-xl text-slate-800 tracking-wide flex items-center gap-1">
+                        Susan外贸私教 <icons.Sparkles className="w-4 h-4 text-pink-400" />
+                      </span>
+                    </div>
+                    <button 
+                      onClick={handleConsult}
+                      className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg shadow-pink-200 hover:shadow-pink-300 hover:-translate-y-0.5"
+                    >
+                      预约咨询
+                    </button>
                   </div>
-                </button>
-                <div className="flex items-center gap-4 px-4 py-2 bg-white/60 backdrop-blur rounded-2xl border border-white/50">
-                   <div className="flex -space-x-3">
-                    {[1,2,3].map(i => (
-                      <div key={i} className={`w-10 h-10 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br ${i===1?'from-pink-400 to-pink-300':i===2?'from-purple-400 to-purple-300':'from-indigo-400 to-indigo-300'}`}>
-                        <User size={16} />
+                </div>
+              </nav>
+
+              {/* Hero Section - 软萌科技风 */}
+              <div className="relative pt-32 pb-20 z-10">
+                <div className="max-w-5xl mx-auto px-4">
+                  <div className="flex flex-col md:flex-row gap-12 items-center">
+                    
+                    <div className="md:w-3/5 space-y-8">
+                      <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur border border-white px-4 py-1.5 rounded-full text-sm font-bold text-violet-600 shadow-sm">
+                        <span className="relative flex h-3 w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                        </span>
+                        目前仅剩 2 个私教名额
+                      </div>
+                      
+                      <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight">
+                        不做流水线式培训<br/>
+                        只做 <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">Susan 1v1</span>
+                        <br/><span className="text-3xl md:text-5xl text-slate-700">精准陪跑</span>
+                      </h1>
+                      
+                      <p className="text-lg text-slate-600 leading-relaxed max-w-xl font-medium">
+                        不需要你看几百个小时的录播课，也不给你扔一堆无效的海关数据。
+                        <br/><br/>
+                        <strong className="text-indigo-600">我叫Susan。</strong> 我用最直接的方式，在线手把手带你解决具体的业务难题。从选品定位到谈判成交，更精准，更高效。
+                      </p>
+                      
+                      <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                        <button onClick={handleConsult} className="group relative bg-slate-900 text-white text-lg font-bold py-4 px-10 rounded-2xl shadow-xl shadow-slate-200 overflow-hidden transition-all hover:scale-105 hover:shadow-2xl">
+                          <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-violet-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="relative flex items-center justify-center gap-2">
+                            <icons.MessageCircle className="w-5 h-5" />
+                            和Susan聊聊
+                          </div>
+                        </button>
+                        <div className="flex items-center gap-4 px-4 py-2 bg-white/60 backdrop-blur rounded-2xl border border-white/50">
+                           <div className="flex -space-x-3">
+                            {[1,2,3].map(i => (
+                              <div key={i} className={`w-10 h-10 rounded-full border-2 border-white shadow-sm flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br ${i===1?'from-pink-400 to-pink-300':i===2?'from-purple-400 to-purple-300':'from-indigo-400 to-indigo-300'}`}>
+                                <icons.User size={16} />
+                              </div>
+                            ))}
+                          </div>
+                          <span className="text-sm font-bold text-slate-600">300+ 学员突破瓶颈</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 右侧形象/对比卡片 - 全息玻璃质感 */}
+                    <div className="md:w-2/5 w-full perspective-1000">
+                      <div className="relative bg-white/40 backdrop-blur-xl border border-white/60 rounded-[2.5rem] p-8 text-slate-800 shadow-[0_20px_50px_rgba(8,112,184,0.1)] overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
+                        {/* 装饰光斑 */}
+                        <div className="absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full blur-3xl opacity-30"></div>
+                        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-blue-300 to-cyan-300 rounded-full blur-3xl opacity-30"></div>
+                        
+                        <div className="relative z-10">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="p-3 bg-gradient-to-br from-pink-500 to-violet-500 rounded-2xl shadow-lg shadow-pink-200">
+                              <icons.Crown className="text-white w-6 h-6" />
+                            </div>
+                            <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700">
+                              为什么要找Susan？
+                            </h3>
+                          </div>
+                          
+                          <div className="space-y-4">
+                            <div className="bg-white/60 p-4 rounded-2xl border border-white/50 shadow-sm flex gap-3 items-start">
+                              <div className="shrink-0 mt-1 bg-red-100 text-red-500 rounded-full p-1">
+                                <icons.XCircle size={16} />
+                              </div>
+                              <div>
+                                <p className="text-xs text-slate-500 mb-1">传统机构</p>
+                                <p className="text-sm font-medium text-slate-700">看录播课，内容泛泛，送一堆无效数据</p>
+                              </div>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-white/80 to-indigo-50/80 p-4 rounded-2xl border border-indigo-100 shadow-md shadow-indigo-100/50 flex gap-3 items-start transform scale-105">
+                              <div className="shrink-0 mt-1 bg-green-100 text-green-600 rounded-full p-1">
+                                <icons.CheckCircle size={16} />
+                              </div>
+                              <div>
+                                <p className="text-xs text-indigo-500 font-bold mb-1 flex items-center gap-1">Susan 1v1 <icons.Star size={10} fill="currentColor" /></p>
+                                <p className="text-sm font-bold text-slate-800">针对你的产品，实时在线指导，只找有效客户</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mt-8 pt-6 border-t border-slate-200/50 flex justify-between items-center">
+                            <div>
+                              <p className="text-slate-400 text-xs uppercase tracking-wider font-bold">VIP 陪跑</p>
+                              <p className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600">¥9,000</p>
+                            </div>
+                            <div className="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1 shadow-lg shadow-slate-200">
+                              <icons.Zap size={12} className="text-yellow-300 fill-yellow-300" />
+                              高定服务
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              {/* 理念阐述 - 卡片悬浮 */}
+              <div className="py-20 relative z-10">
+                <div className="max-w-4xl mx-auto px-4 text-center">
+                  <h2 className="text-3xl font-bold text-slate-900 mb-10">外贸不做无用功，<span className="relative inline-block px-2">精准<span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-200 -z-10 rounded-full opacity-70"></span></span>才是硬道理</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     {[
+                       {icon: icons.Target, color: "text-pink-500", bg: "bg-pink-100", title: "精准定位", desc: "不盲目撒网，帮你找到真正适合你产品的高利润市场。"},
+                       {icon: icons.User, color: "text-violet-500", bg: "bg-violet-100", title: "精准人设", desc: "打造专业且真实的个人IP，让客户因为信任你而买单。"},
+                       {icon: icons.Zap, color: "text-blue-500", bg: "bg-blue-100", title: "精准出击", desc: "针对性写开发信和谈判，大幅提升每一封邮件的回复率。"}
+                     ].map((item, i) => (
+                       <div key={i} className="group bg-white/70 backdrop-blur-sm p-8 rounded-[2rem] shadow-lg shadow-slate-100 border border-white/60 hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/50 transition-all duration-300">
+                         <div className={`w-16 h-16 ${item.bg} rounded-2xl flex items-center justify-center mx-auto mb-6 transition-transform group-hover:rotate-6`}>
+                           <item.icon className={`${item.color} w-8 h-8`} />
+                         </div>
+                         <h3 className="text-xl font-bold mb-3 text-slate-800">{item.title}</h3>
+                         <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
+                       </div>
+                     ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* 辅导内容 - 科技感列表 */}
+              <div className="py-16 relative z-10">
+                <div className="max-w-4xl mx-auto px-4">
+                  <div className="text-center mb-12">
+                    <span className="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold tracking-wider mb-3">COACHING SERVICE</span>
+                    <h2 className="text-3xl font-bold text-slate-900">Susan将如何带你？</h2>
+                    <p className="text-slate-500 mt-3">没有千篇一律的课件，只有针对你业务的实战辅导</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    {coachingTopics.map((module, index) => (
+                      <div key={index} className={`group rounded-[1.5rem] border transition-all duration-300 overflow-hidden ${openModule === index ? 'bg-white shadow-xl shadow-indigo-100 border-indigo-200' : 'bg-white/60 border-white hover:bg-white hover:shadow-md'}`}>
+                        <button 
+                          onClick={() => toggleModule(index)}
+                          className="w-full flex items-center justify-between p-6 text-left"
+                        >
+                          <div className="flex items-center gap-5">
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg shrink-0 transition-colors ${openModule === index ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-300' : 'bg-indigo-50 text-indigo-400'}`}>
+                              0{index + 1}
+                            </div>
+                            <div>
+                              <h3 className={`text-lg font-bold transition-colors ${openModule === index ? 'text-indigo-900' : 'text-slate-800'}`}>{module.title}</h3>
+                              <p className="text-sm text-slate-500 mt-1 pr-4">{module.desc}</p>
+                            </div>
+                          </div>
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${openModule === index ? 'bg-indigo-100 text-indigo-600 rotate-180' : 'text-slate-400'}`}>
+                            <icons.ChevronDown size={20} />
+                          </div>
+                        </button>
+                        
+                        {openModule === index && (
+                          <div className="px-6 pb-8 pt-2 ml-[4.5rem]">
+                            <div className="space-y-3 relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-0.5 before:bg-indigo-100 pl-6">
+                              {module.points.map((point, idx) => (
+                                <div key={idx} className="flex items-start gap-3 text-slate-700 text-sm animate-in fade-in slide-in-from-left-4 duration-300" style={{animationDelay: `${idx * 100}ms`}}>
+                                  <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 shrink-0 shadow-[0_0_8px_rgba(244,114,182,0.6)]"></div>
+                                  <span>{point}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
-                  <span className="text-sm font-bold text-slate-600">300+ 学员突破瓶颈</span>
                 </div>
               </div>
-            </div>
 
-            {/* 右侧形象/对比卡片 - 全息玻璃质感 */}
-            <div className="md:w-2/5 w-full perspective-1000">
-              <div className="relative bg-white/40 backdrop-blur-xl border border-white/60 rounded-[2.5rem] p-8 text-slate-800 shadow-[0_20px_50px_rgba(8,112,184,0.1)] overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
-                {/* 装饰光斑 */}
-                <div className="absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full blur-3xl opacity-30"></div>
-                <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-blue-300 to-cyan-300 rounded-full blur-3xl opacity-30"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="p-3 bg-gradient-to-br from-pink-500 to-violet-500 rounded-2xl shadow-lg shadow-pink-200">
-                      <Crown className="text-white w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700">
-                      为什么要找Susan？
-                    </h3>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="bg-white/60 p-4 rounded-2xl border border-white/50 shadow-sm flex gap-3 items-start">
-                      <div className="shrink-0 mt-1 bg-red-100 text-red-500 rounded-full p-1">
-                        <XCircle size={16} />
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500 mb-1">传统机构</p>
-                        <p className="text-sm font-medium text-slate-700">看录播课，内容泛泛，送一堆无效数据</p>
-                      </div>
-                    </div>
+              {/* 适合人群与承诺 - 深色科技背景 */}
+              <div className="py-20 mt-10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-slate-900">
+                   <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                   <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/30 rounded-full blur-[100px]"></div>
+                   <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/30 rounded-full blur-[100px]"></div>
+                </div>
 
-                    <div className="bg-gradient-to-r from-white/80 to-indigo-50/80 p-4 rounded-2xl border border-indigo-100 shadow-md shadow-indigo-100/50 flex gap-3 items-start transform scale-105">
-                      <div className="shrink-0 mt-1 bg-green-100 text-green-600 rounded-full p-1">
-                        <CheckCircle size={16} />
-                      </div>
-                      <div>
-                        <p className="text-xs text-indigo-500 font-bold mb-1 flex items-center gap-1">Susan 1v1 <Star size={10} fill="currentColor" /></p>
-                        <p className="text-sm font-bold text-slate-800">针对你的产品，实时在线指导，只找有效客户</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t border-slate-200/50 flex justify-between items-center">
-                    <div>
-                      <p className="text-slate-400 text-xs uppercase tracking-wider font-bold">VIP 陪跑</p>
-                      <p className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600">¥9,000</p>
-                    </div>
-                    <div className="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1 shadow-lg shadow-slate-200">
-                      <Zap size={12} className="text-yellow-300 fill-yellow-300" />
-                      高定服务
-                    </div>
-                  </div>
+                <div className="max-w-5xl mx-auto px-4 relative z-10">
+                   <div className="grid md:grid-cols-2 gap-16">
+                     <div>
+                       <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-2">
+                         <span className="w-8 h-8 rounded-lg bg-pink-500 flex items-center justify-center text-white"><icons.Heart size={16} fill="currentColor" /></span>
+                         我只收这几类学员
+                       </h3>
+                       <ul className="space-y-6">
+                         {[
+                           "真心想把外贸当做长期事业，而不是想赚快钱的人。",
+                           "遇到瓶颈期的SOHO或业务员，有一定基础但急需突破。",
+                           "愿意动手实操，而不是买了服务就等着天上掉订单。"
+                         ].map((text, i) => (
+                           <li key={i} className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                             <div className="text-pink-400 font-bold font-mono text-xl">0{i+1}</div>
+                             <p className="text-slate-300 text-sm leading-relaxed">{text}</p>
+                           </li>
+                         ))}
+                       </ul>
+                     </div>
+                     
+                     <div className="bg-white/10 backdrop-blur-md rounded-[2rem] p-8 border border-white/10">
+                       <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-2">
+                         <span className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white"><icons.Award size={18} /></span>
+                         Susan的陪跑承诺
+                       </h3>
+                       <div className="space-y-8">
+                         <div className="flex gap-5">
+                            <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center shrink-0 text-indigo-300 border border-indigo-500/30">
+                              <icons.Coffee size={24} />
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-white text-lg">不做甩手掌柜</h4>
+                              <p className="text-sm text-slate-400 mt-2 leading-relaxed">你的每一个问题，我都亲自回复，绝不让助理敷衍。像朋友一样陪你升级打怪。</p>
+                            </div>
+                         </div>
+                         <div className="flex gap-5">
+                            <div className="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center shrink-0 text-pink-300 border border-pink-500/30">
+                              <icons.Target size={24} />
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-white text-lg">结果导向</h4>
+                              <p className="text-sm text-slate-400 mt-2 leading-relaxed">我们的目标很明确：出单、出单、还是出单。拒绝无效努力，直奔结果。</p>
+                            </div>
+                         </div>
+                       </div>
+                       
+                       <div className="mt-8 pt-6 border-t border-white/10 text-center">
+                         <p className="text-indigo-200 text-sm">“ 最好的投资，是投资你自己的大脑。”</p>
+                       </div>
+                     </div>
+                   </div>
                 </div>
               </div>
-            </div>
 
-          </div>
-        </div>
-      </div>
+              {/* 底部CTA Mobile */}
+              <div className="fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl border border-white/50 p-4 z-50 md:hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-3xl">
+                <div className="flex gap-4 items-center">
+                   <div className="flex-1 pl-2">
+                     <div className="text-slate-900 font-bold text-lg">¥9,000 <span className="text-xs font-normal text-slate-500">/ 陪跑</span></div>
+                     <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Susan 1v1 Premium</div>
+                   </div>
+                   <button onClick={handleConsult} className="bg-slate-900 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-slate-300">
+                     预约时间
+                   </button>
+                </div>
+              </div>
 
-      {/* 理念阐述 - 卡片悬浮 */}
-      <div className="py-20 relative z-10">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 mb-10">外贸不做无用功，<span className="relative inline-block px-2">精准<span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-200 -z-10 rounded-full opacity-70"></span></span>才是硬道理</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-             {[
-               {icon: Target, color: "text-pink-500", bg: "bg-pink-100", title: "精准定位", desc: "不盲目撒网，帮你找到真正适合你产品的高利润市场。"},
-               {icon: User, color: "text-violet-500", bg: "bg-violet-100", title: "精准人设", desc: "打造专业且真实的个人IP，让客户因为信任你而买单。"},
-               {icon: Zap, color: "text-blue-500", bg: "bg-blue-100", title: "精准出击", desc: "针对性写开发信和谈判，大幅提升每一封邮件的回复率。"}
-             ].map((item, i) => (
-               <div key={i} className="group bg-white/70 backdrop-blur-sm p-8 rounded-[2rem] shadow-lg shadow-slate-100 border border-white/60 hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/50 transition-all duration-300">
-                 <div className={`w-16 h-16 ${item.bg} rounded-2xl flex items-center justify-center mx-auto mb-6 transition-transform group-hover:rotate-6`}>
-                   <item.icon className={`${item.color} w-8 h-8`} />
+              {/* 底部 Footer */}
+              <div className="hidden md:block py-12 bg-white text-center text-slate-400 text-sm border-t border-slate-100">
+                 <div className="max-w-4xl mx-auto pt-8">
+                    <h2 className="text-2xl text-slate-900 font-bold mb-2">不想再走弯路？</h2>
+                    <p className="mb-8 text-slate-500">机会总是留给有准备且愿意行动的人。</p>
+                    <button onClick={handleConsult} className="bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white text-lg font-bold py-3 px-12 rounded-full shadow-xl shadow-slate-200 transition-all hover:-translate-y-1 mb-8">
+                        加微信详聊 (¥9,000)
+                    </button>
+                    <p className="flex items-center justify-center gap-2 opacity-60">
+                      © 2025 Susan外贸私教 
+                      <span className="w-1 h-1 rounded-full bg-slate-400"></span>
+                      Designed with <icons.Heart size={10} className="text-pink-400 fill-pink-400" />
+                    </p>
                  </div>
-                 <h3 className="text-xl font-bold mb-3 text-slate-800">{item.title}</h3>
-                 <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
-               </div>
-             ))}
-          </div>
-        </div>
-      </div>
+              </div>
 
-      {/* 辅导内容 - 科技感列表 */}
-      <div className="py-16 relative z-10">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold tracking-wider mb-3">COACHING SERVICE</span>
-            <h2 className="text-3xl font-bold text-slate-900">Susan将如何带你？</h2>
-            <p className="text-slate-500 mt-3">没有千篇一律的课件，只有针对你业务的实战辅导</p>
-          </div>
-
-          <div className="space-y-4">
-            {coachingTopics.map((module, index) => (
-              <div key={index} className={`group rounded-[1.5rem] border transition-all duration-300 overflow-hidden ${openModule === index ? 'bg-white shadow-xl shadow-indigo-100 border-indigo-200' : 'bg-white/60 border-white hover:bg-white hover:shadow-md'}`}>
-                <button 
-                  onClick={() => toggleModule(index)}
-                  className="w-full flex items-center justify-between p-6 text-left"
-                >
-                  <div className="flex items-center gap-5">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg shrink-0 transition-colors ${openModule === index ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-300' : 'bg-indigo-50 text-indigo-400'}`}>
-                      0{index + 1}
-                    </div>
-                    <div>
-                      <h3 className={`text-lg font-bold transition-colors ${openModule === index ? 'text-indigo-900' : 'text-slate-800'}`}>{module.title}</h3>
-                      <p className="text-sm text-slate-500 mt-1 pr-4">{module.desc}</p>
-                    </div>
-                  </div>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${openModule === index ? 'bg-indigo-100 text-indigo-600 rotate-180' : 'text-slate-400'}`}>
-                    <ChevronDown size={20} />
-                  </div>
-                </button>
-                
-                {openModule === index && (
-                  <div className="px-6 pb-8 pt-2 ml-[4.5rem]">
-                    <div className="space-y-3 relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-0.5 before:bg-indigo-100 pl-6">
-                      {module.points.map((point, idx) => (
-                        <div key={idx} className="flex items-start gap-3 text-slate-700 text-sm animate-in fade-in slide-in-from-left-4 duration-300" style={{animationDelay: `${idx * 100}ms`}}>
-                          <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 shrink-0 shadow-[0_0_8px_rgba(244,114,182,0.6)]"></div>
-                          <span>{point}</span>
+              {/* 咨询弹窗 */}
+              {showModal && (
+                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+                  <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] w-full max-w-sm p-8 relative animate-in fade-in zoom-in duration-300 shadow-2xl border border-white/50">
+                    <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-pink-50 to-transparent rounded-t-[2.5rem] -z-10"></div>
+                    
+                    <button onClick={() => setShowModal(false)} className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 transition-colors">
+                      <icons.XCircle size={20} />
+                    </button>
+                    
+                    <div className="text-center mb-8 pt-4">
+                      <div className="relative inline-block mx-auto mb-4">
+                        <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full blur animate-pulse opacity-50"></div>
+                        <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center border-4 border-white shadow-lg overflow-hidden">
+                           <icons.User className="w-10 h-10 text-slate-300" />
                         </div>
-                      ))}
+                        <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-2 border-white rounded-full flex items-center justify-center">
+                          <icons.CheckCircle size={12} className="text-white" />
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900">联系Susan老师</h3>
+                      <p className="text-slate-500 text-sm mt-2">1v1咨询请直接添加本人微信<br/>非助理，请耐心等待通过</p>
                     </div>
+                    
+                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 mb-6 text-center group cursor-pointer hover:border-pink-200 transition-colors">
+                       <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">WeChat ID</p>
+                       <p className="text-2xl font-bold text-slate-900 select-all font-mono tracking-wide group-hover:text-pink-600 transition-colors">1531827353</p>
+                    </div>
+
+                    <button onClick={() => setShowModal(false)} className="w-full bg-gradient-to-r from-slate-900 to-slate-800 text-white py-4 rounded-2xl font-bold hover:shadow-lg hover:shadow-slate-300 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                      复制微信号去添加 <icons.ArrowRight size={16} />
+                    </button>
+                    <p className="text-xs text-center text-slate-400 mt-5 flex items-center justify-center gap-1">
+                      <icons.Sparkles size={10} className="text-yellow-400" /> 
+                      备注“陪跑咨询”会优先通过哦
+                    </p>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 适合人群与承诺 - 深色科技背景 */}
-      <div className="py-20 mt-10 relative overflow-hidden">
-        <div className="absolute inset-0 bg-slate-900">
-           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-           <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/30 rounded-full blur-[100px]"></div>
-           <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/30 rounded-full blur-[100px]"></div>
-        </div>
-
-        <div className="max-w-5xl mx-auto px-4 relative z-10">
-           <div className="grid md:grid-cols-2 gap-16">
-             <div>
-               <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-2">
-                 <span className="w-8 h-8 rounded-lg bg-pink-500 flex items-center justify-center text-white"><Heart size={16} fill="currentColor" /></span>
-                 我只收这几类学员
-               </h3>
-               <ul className="space-y-6">
-                 {[
-                   "真心想把外贸当做长期事业，而不是想赚快钱的人。",
-                   "遇到瓶颈期的SOHO或业务员，有一定基础但急需突破。",
-                   "愿意动手实操，而不是买了服务就等着天上掉订单。"
-                 ].map((text, i) => (
-                   <li key={i} className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                     <div className="text-pink-400 font-bold font-mono text-xl">0{i+1}</div>
-                     <p className="text-slate-300 text-sm leading-relaxed">{text}</p>
-                   </li>
-                 ))}
-               </ul>
-             </div>
-             
-             <div className="bg-white/10 backdrop-blur-md rounded-[2rem] p-8 border border-white/10">
-               <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-2">
-                 <span className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white"><Award size={18} /></span>
-                 Susan的陪跑承诺
-               </h3>
-               <div className="space-y-8">
-                 <div className="flex gap-5">
-                    <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center shrink-0 text-indigo-300 border border-indigo-500/30">
-                      <Coffee size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white text-lg">不做甩手掌柜</h4>
-                      <p className="text-sm text-slate-400 mt-2 leading-relaxed">你的每一个问题，我都亲自回复，绝不让助理敷衍。像朋友一样陪你升级打怪。</p>
-                    </div>
-                 </div>
-                 <div className="flex gap-5">
-                    <div className="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center shrink-0 text-pink-300 border border-pink-500/30">
-                      <Target size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white text-lg">结果导向</h4>
-                      <p className="text-sm text-slate-400 mt-2 leading-relaxed">我们的目标很明确：出单、出单、还是出单。拒绝无效努力，直奔结果。</p>
-                    </div>
-                 </div>
-               </div>
-               
-               <div className="mt-8 pt-6 border-t border-white/10 text-center">
-                 <p className="text-indigo-200 text-sm">“ 最好的投资，是投资你自己的大脑。”</p>
-               </div>
-             </div>
-           </div>
-        </div>
-      </div>
-
-      {/* 底部CTA Mobile */}
-      <div className="fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl border border-white/50 p-4 z-50 md:hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-3xl">
-        <div className="flex gap-4 items-center">
-           <div className="flex-1 pl-2">
-             <div className="text-slate-900 font-bold text-lg">¥9,000 <span className="text-xs font-normal text-slate-500">/ 陪跑</span></div>
-             <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Susan 1v1 Premium</div>
-           </div>
-           <button onClick={handleConsult} className="bg-slate-900 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-slate-300">
-             预约时间
-           </button>
-        </div>
-      </div>
-
-      {/* 底部 Footer */}
-      <div className="hidden md:block py-12 bg-white text-center text-slate-400 text-sm border-t border-slate-100">
-         <div className="max-w-4xl mx-auto pt-8">
-            <h2 className="text-2xl text-slate-900 font-bold mb-2">不想再走弯路？</h2>
-            <p className="mb-8 text-slate-500">机会总是留给有准备且愿意行动的人。</p>
-            <button onClick={handleConsult} className="bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white text-lg font-bold py-3 px-12 rounded-full shadow-xl shadow-slate-200 transition-all hover:-translate-y-1 mb-8">
-                加微信详聊 (¥9,000)
-            </button>
-            <p className="flex items-center justify-center gap-2 opacity-60">
-              © 2025 Susan外贸私教 
-              <span className="w-1 h-1 rounded-full bg-slate-400"></span>
-              Designed with <Heart size={10} className="text-pink-400 fill-pink-400" />
-            </p>
-         </div>
-      </div>
-
-      {/* 咨询弹窗 - 个人微信 - 可爱科技风 */}
-      {showModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-          <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] w-full max-w-sm p-8 relative animate-in fade-in zoom-in duration-300 shadow-2xl border border-white/50">
-            {/* 弹窗背景装饰 */}
-            <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-pink-50 to-transparent rounded-t-[2.5rem] -z-10"></div>
-            
-            <button onClick={() => setShowModal(false)} className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 transition-colors">
-              <XCircle size={20} />
-            </button>
-            
-            <div className="text-center mb-8 pt-4">
-              <div className="relative inline-block mx-auto mb-4">
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-violet-400 rounded-full blur animate-pulse opacity-50"></div>
-                <div className="relative w-20 h-20 bg-white rounded-full flex items-center justify-center border-4 border-white shadow-lg overflow-hidden">
-                   <User className="w-10 h-10 text-slate-300" />
                 </div>
-                <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-2 border-white rounded-full flex items-center justify-center">
-                  <CheckCircle size={12} className="text-white" />
-                </div>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">联系Susan老师</h3>
-              <p className="text-slate-500 text-sm mt-2">1v1咨询请直接添加本人微信<br/>非助理，请耐心等待通过</p>
+              )}
             </div>
-            
-            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 mb-6 text-center group cursor-pointer hover:border-pink-200 transition-colors">
-               <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">WeChat ID</p>
-               <p className="text-2xl font-bold text-slate-900 select-all font-mono tracking-wide group-hover:text-pink-600 transition-colors">1531827353</p>
-            </div>
+          );
+        };
 
-            <button onClick={() => setShowModal(false)} className="w-full bg-gradient-to-r from-slate-900 to-slate-800 text-white py-4 rounded-2xl font-bold hover:shadow-lg hover:shadow-slate-300 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-              复制微信号去添加 <ArrowRight size={16} />
-            </button>
-            <p className="text-xs text-center text-slate-400 mt-5 flex items-center justify-center gap-1">
-              <Sparkles size={10} className="text-yellow-400" /> 
-              备注“陪跑咨询”会优先通过哦
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default App;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
